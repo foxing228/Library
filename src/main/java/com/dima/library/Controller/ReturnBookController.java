@@ -32,13 +32,13 @@ public class ReturnBookController {
     public ResponseEntity<Object> returnBook(
             @PathVariable("id") User user,
             @RequestBody @Valid BookDto bookDto) {
-        if (bookDto == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
-        if (user == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        if (bookDto == null || user == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         Book book = bookService.findByNameAndAuthor(bookDto.getName(), bookDto.getAuthor());
 
-        if (book.getStatus().equals(Status.TAKEN)) {
+        if (book == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        if (book.getUser() != null) {
             book.setUser(null);
             book.setStatus(Status.FREE);
             user.removeBook(book);

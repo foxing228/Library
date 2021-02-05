@@ -35,9 +35,7 @@ public class TakeBookController {
     public ResponseEntity<Object> takeBook(
             @PathVariable("id") User user,
             @RequestBody @Valid BookDto bookDto) {
-        if (bookDto == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
-        if (user == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        if (bookDto == null || user == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         Book book = bookService.findByNameAndAuthor(bookDto.getName(), bookDto.getAuthor());
 
